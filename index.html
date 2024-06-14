@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CANVAS APP</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>CANVAS APP</h1>
+    <div class="canvas-container">
+      <canvas></canvas>
+
+      <div>
+        <div>
+          <div
+            class="color-option"
+            style="background-color: #000000"
+            data-color="#000000"
+          ></div>
+          <div
+            class="color-option"
+            style="background-color: #ff0000"
+            data-color="#ff0000"
+          ></div>
+          <div
+            class="color-option"
+            style="background-color: #ff8c00"
+            data-color="#ff8c00"
+          ></div>
+          <div
+            class="color-option"
+            style="background-color: #ffff00"
+            data-color="#ffff00"
+          ></div>
+          <div
+            class="color-option"
+            style="background-color: #008000"
+            data-color="#008000"
+          ></div>
+          <div
+            class="color-option"
+            style="background-color: #0000ff"
+            data-color="#0000ff"
+          ></div>
+          <div
+            class="color-option"
+            style="background-color: #800080"
+            data-color="#800080"
+          ></div>
+        </div>
+
+        <input
+          id="line-width"
+          type="range"
+          min="1"
+          max="10"
+          value="1"
+          step="1"
+        />
+      </div>
+    </div>
+    <div>
+      <button id="mode-btn">채우기</button>
+      <button id="del-btn">지우기</button>
+      <!-- <button id="eraser-btn">지우개</button> -->
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
