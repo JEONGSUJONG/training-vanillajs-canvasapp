@@ -1,6 +1,6 @@
 const modeBtn = document.getElementById("mode-btn");
 const delBtn = document.getElementById("del-btn");
-const eraseBtn = document.getElementById("eraser-btn");
+// const eraseBtn = document.getElementById("eraser-btn");
 
 const lineWidth = document.getElementById("line-width");
 const colorOptions = Array.from(
@@ -12,8 +12,8 @@ const ctx = canvas.getContext("2d");
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
 
-canvas.width = 500;
-canvas.height = 500;
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
 
 ctx.lineWidth = lineWidth.value;
 let isPainting = false;
@@ -44,7 +44,7 @@ function onLineWidthChange(event) {
 function onColorClick(event) {
   colorOptions.forEach((option) => option.classList.remove("selected"));
   event.target.classList.add("selected");
-  const colorValue = event.target.dataset.color;
+  const colorValue = event.target.getAttribute("data-color");
   ctx.strokeStyle = colorValue;
   ctx.fillStyle = colorValue;
 }
