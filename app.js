@@ -1,6 +1,6 @@
 const modeBtn = document.getElementById("mode-btn");
 const delBtn = document.getElementById("del-btn");
-// const eraseBtn = document.getElementById("eraser-btn");
+const undoBtn = document.getElementById("undo-btn");
 
 const lineWidth = document.getElementById("line-width");
 const colorOptions = Array.from(
@@ -18,6 +18,8 @@ canvas.height = CANVAS_HEIGHT;
 ctx.lineWidth = lineWidth.value;
 let isPainting = false;
 let isFilling = false;
+let memory_arr = [];
+let memory_idx = -1;
 
 function onMove(event) {
   if (isPainting) {
@@ -28,13 +30,34 @@ function onMove(event) {
   ctx.moveTo(event.offsetX, event.offsetY);
 }
 
+// 이미지 그리기
 function onMouseDown() {
   isPainting = true;
 }
 
 function onMouseUp() {
+  if (isPainting) {
+    memory_arr.push(ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT));
+    memory_idx = memory_arr.length - 1;
+    console.log("Push memory_arr", memory_arr);
+    console.log("Push memory_idx", memory_idx);
+  }
   isPainting = false;
   ctx.beginPath();
+}
+
+// 뒤로가기
+function undo_latest() {
+  if (memory_idx >= 0) {
+    memory_arr.pop();
+    memory_idx = memory_arr.length - 1;
+    console.log("Pop memory_arr", memory_arr);
+    console.log("Pop memory_idx", memory_idx);
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    if (memory_idx >= 0) {
+      ctx.putImageData(memory_arr[memory_idx], 0, 0);
+    }
+  }
 }
 
 function onLineWidthChange(event) {
@@ -62,23 +85,21 @@ function onModeClick() {
 function onCanvasClick() {
   if (isFilling) {
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    memory_arr.push(ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT));
+    memory_idx = memory_arr.length - 1;
   }
 }
 
 function onDelBtn() {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  memory_arr = [];
+  memory_idx = -1;
+  console.log("All Clear.");
 }
-
-// function onEraserClick() {
-//   ctx.strokeStyle = "white";
-//   isFilling = false;
-//   modeBtn.innerText = "Fill";
-// }
 
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", onMouseDown);
 canvas.addEventListener("mouseup", onMouseUp);
-canvas.addEventListener("mouseleave", onMouseUp);
 canvas.addEventListener("click", onCanvasClick);
 
 lineWidth.addEventListener("change", onLineWidthChange);
@@ -87,4 +108,4 @@ colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
 
 modeBtn.addEventListener("click", onModeClick);
 delBtn.addEventListener("click", onDelBtn);
-// eraseBtn.addEventListener("click", onEraserClick);
+undoBtn.addEventListener("click", undo_latest);
